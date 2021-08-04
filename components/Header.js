@@ -42,7 +42,7 @@ const Header = () => {
               <>
                 <Navbar.Item renderAs="li">
                   <Link href="/profile-sg">
-                    <Media renderAs="a">
+                    <a className="media">
                       <BulmaImage
                         size={24}
                         rounded
@@ -51,7 +51,7 @@ const Header = () => {
                         alt={user.login}
                       />{" "}
                       Profile (Static Generation, recommended)
-                    </Media>
+                    </a>
                   </Link>
                 </Navbar.Item>
                 <Navbar.Item renderAs="li">

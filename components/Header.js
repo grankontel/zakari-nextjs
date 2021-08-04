@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import useUser from '../lib/useUser'
 import { useRouter } from 'next/router'
@@ -28,7 +29,8 @@ const Header = () => {
               <li>
                 <Link href="/profile-sg">
                   <a>
-                    <img src={user.avatarUrl} width={20} height={20} /> Profile
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={user.avatarUrl} width={20} height={20} alt={user.login} /> Profile
                     (Static Generation, recommended)
                   </a>
                 </Link>
@@ -39,6 +41,7 @@ const Header = () => {
                 </Link>
               </li>
               <li>
+                {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <a
                   href="/api/logout"
                   onClick={async (e) => {
@@ -57,7 +60,7 @@ const Header = () => {
           )}
           <li>
             <a href="https://github.com/vvo/next-iron-session">
-              <img src="/GitHub-Mark-Light-32px.png" width="32" height="32" />
+              <Image src="/GitHub-Mark-Light-32px.png" width="32" height="32" alt="GitHub" />
             </a>
           </li>
         </ul>

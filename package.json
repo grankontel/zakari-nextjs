@@ -2,6 +2,13 @@
   "name": "zakari-web",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "description": "On espérimantasyon a zakari épi NextJs",
+  "keywords": [
+    "nextjs",
+    "kreyol",
+    "zakari"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

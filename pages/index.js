@@ -8,32 +8,7 @@ import {
 } from "react-bulma-components";
 import { useState } from "react";
 import useUser from "../lib/useUser";
-
-const _token =
-  "tmalo.SGSKDTYxizchyMAnk-Qhm.23TnGO35+WXuiSvUleo9ROfyP8Na8XbEbJya+KerrxM=";
-
-const postZakari = async (endPoint, token, reqMessage) => {
-  var qHeaders = new Headers();
-  qHeaders.append("User-Agent", "zakari-web");
-  qHeaders.append("Content-Type", "application/json");
-  qHeaders.append("Authorization", "Bearer " + token);
-
-  var qInit = {
-    method: "POST",
-    headers: qHeaders,
-    mode: "cors",
-    cache: "no-cache",
-    body: JSON.stringify({
-      kreyol: "GP",
-      request: reqMessage,
-    }),
-  };
-
-  var request = new Request(endPoint, qInit);
-  return await fetch(request, qInit).then(async (r) => {
-    return await r.json();
-  });
-};
+import postZakari from "../lib/postZakari";
 
 const ZakariForm = ({ ...props }) => {
   const  [isLoading, setIsLoading]  = useState(false);

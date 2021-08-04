@@ -1,114 +1,96 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import useUser from "../lib/useUser";
 import { useRouter } from "next/router";
 import fetchJson from "../lib/fetchJson";
+import {
+  Container,
+  Navbar,
+  Image as BulmaImage,
+  Media,
+} from "react-bulma-components";
+const classNames = require("classnames");
 
 const Header = () => {
   const { user, mutateUser } = useUser();
   const router = useRouter();
+  const  [mobileOpen, setMobileOpen]  = useState(false);
+  const toggleMobileMenu = useCallback(() => setMobileOpen(!mobileOpen), [mobileOpen]);
+
+  const navMenu = classNames({
+    "is-active": mobileOpen,
+  });
+
   return (
-    <header className="mb-4">
-      <nav className="py-2">
-        <ul>
-          <li>
-            <Link href="/">
-              <a>Home</a>
-            </Link>
-          </li>
-          {!user?.isLoggedIn && (
-            <li>
-              <Link href="/login">
-                <a>Login</a>
-              </Link>
-            </li>
-          )}
-          {user?.isLoggedIn && (
-            <>
-              <li>
-                <Link href="/profile-sg">
-                  <a>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={user.avatarUrl}
-                      width={20}
-                      height={20}
-                      alt={user.login}
-                    />{" "}
-                    Profile (Static Generation, recommended)
+    <header>
+      <Navbar py={2}>
+        <Navbar.Burger onClick={toggleMobileMenu} aria-label="menu" />
+        <Navbar.Menu renderAs="div" className={navMenu}>
+          <Navbar.Container align="right" renderAs="ul">
+            <Navbar.Item renderAs="li">
+              <Link href="/">Home</Link>
+            </Navbar.Item>
+            {!user?.isLoggedIn && (
+              <Navbar.Item renderAs="li">
+                <Link href="/login">
+                  <a>Login</a>
+                </Link>
+              </Navbar.Item>
+            )}
+
+            {user?.isLoggedIn && (
+              <>
+                <Navbar.Item renderAs="li">
+                  <Link href="/profile-sg">
+                    <Media renderAs="a">
+                      <BulmaImage
+                        size={24}
+                        rounded
+                        className="media-left"
+                        src={user.avatarUrl}
+                        alt={user.login}
+                      />{" "}
+                      Profile (Static Generation, recommended)
+                    </Media>
+                  </Link>
+                </Navbar.Item>
+                <Navbar.Item renderAs="li">
+                  <Link href="/profile-ssr">
+                    Profile (Server-side Rendering)
+                  </Link>
+                </Navbar.Item>
+                <Navbar.Item renderAs="li">
+                  {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                  <a
+                    href="/api/logout"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      mutateUser(
+                        await fetchJson("/api/logout", { method: "POST" }),
+                        false
+                      );
+                      router.push("/login");
+                    }}
+                  >
+                    Logout
                   </a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/profile-ssr">
-                  <a>Profile (Server-side Rendering)</a>
-                </Link>
-              </li>
-              <li>
-                {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                <a
-                  href="/api/logout"
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    mutateUser(
-                      await fetchJson("/api/logout", { method: "POST" }),
-                      false
-                    );
-                    router.push("/login");
-                  }}
-                >
-                  Logout
-                </a>
-              </li>
-            </>
-          )}
-          <li>
-            <a href="https://github.com/vvo/next-iron-session">
-              <Image
-                src="/GitHub-Mark-Light-32px.png"
-                width="32"
-                height="32"
-                alt="GitHub"
-              />
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <style jsx>{`
-        ul {
-          display: flex;
-          list-style: none;
-          margin-left: 0;
-          padding-left: 0;
-        }
-
-        li {
-          margin-right: 1rem;
-          display: flex;
-        }
-
-        li:first-child {
-          margin-left: auto;
-        }
-
-        a {
-          color: #fff;
-          text-decoration: none;
-          display: flex;
-          align-items: center;
-        }
-
-        a img {
-          margin-right: 1em;
-        }
-
-        header {
-          padding: 0.2rem;
-          color: #fff;
-          background-color: #333;
-        }
-      `}</style>
+                </Navbar.Item>
+              </>
+            )}
+            <Navbar.Item renderAs="li">
+              <a href="https://github.com/vvo/next-iron-session">
+                <Image
+                  src="/GitHub-Mark-Light-32px.png"
+                  width="32"
+                  height="32"
+                  alt="GitHub"
+                />
+              </a>
+            </Navbar.Item>
+          </Navbar.Container>
+        </Navbar.Menu>
+      </Navbar>
     </header>
   );
 };

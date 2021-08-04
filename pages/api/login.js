@@ -8,7 +8,7 @@ export default withSession(async (req, res) => {
   try {
     // we check that the user exists on GitHub and store some data in session
     const { login, avatar_url: avatarUrl } = await fetchJson(url)
-    const user = { isLoggedIn: true, login, avatarUrl }
+    const user = { isLoggedIn: true, login, avatarUrl, token: process.env.ZAKARI_TOKEN }
     req.session.set('user', user)
     await req.session.save()
     res.json(user)

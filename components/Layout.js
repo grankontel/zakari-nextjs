@@ -1,7 +1,8 @@
-import React from 'react'
-import Head from 'next/head'
-import Header from './Header'
-import PropTypes from 'prop-types'
+import React from "react";
+import Head from "next/head";
+import Header from "./Header";
+import PropTypes from "prop-types";
+import { Container } from "react-bulma-components";
 
 const Layout = ({ children }) => (
   <>
@@ -9,15 +10,14 @@ const Layout = ({ children }) => (
       <title>With Iron Session</title>
     </Head>
     <Header />
-
     <main>
-      <div className="container">{children}</div>
+      <Container breakpoint="desktop" my={2} max>{children}</Container>
     </main>
   </>
-)
+);
 
-export default Layout
+export default Layout;
 
 Layout.propTypes = {
   children: PropTypes.node,
-}
+};

@@ -1,43 +1,32 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
+import { Button, Notification, Form as BForm } from "react-bulma-components";
 
 const Form = ({ errorMessage, onSubmit }) => (
   <form onSubmit={onSubmit}>
-    <label>
-      <span>Type your GitHub username</span>
-      <input type="text" name="username" required />
-    </label>
+    <BForm.Field>
+      <BForm.Label>Type your GitHub username</BForm.Label>
+      <BForm.Control>
+        <BForm.Input type="text" name="username" required />
+      </BForm.Control>
+    </BForm.Field>
+    <Button.Group align="right">
+    <Button color="primary"  type="submit">
+      Login
+    </Button>
 
-    <button type="submit">Login</button>
+    </Button.Group>
 
-    {errorMessage && <p className="error">{errorMessage}</p>}
+    {errorMessage && <Notification className="error" mt={2}  light color="danger">{errorMessage}</Notification>
+    }
 
-    <style jsx>{`
-      form,
-      label {
-        display: flex;
-        flex-flow: column;
-      }
-      label > span {
-        font-weight: 600;
-      }
-      input {
-        padding: 8px;
-        margin: 0.3rem 0 1rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-      .error {
-        color: brown;
-        margin: 1rem 0 0;
-      }
-    `}</style>
+
   </form>
-)
+);
 
-export default Form
+export default Form;
 
 Form.propTypes = {
   errorMessage: PropTypes.string,
   onSubmit: PropTypes.func,
-}
+};

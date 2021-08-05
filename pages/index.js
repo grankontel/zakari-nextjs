@@ -7,7 +7,7 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="zakari">
+      <div className="zakari my-6">
         <ZakariForm
           endPoint={process.env.NEXT_PUBLIC_ZAKARI_ENDPOINT}
           zakariToken={session?.user?.zakariToken || false }

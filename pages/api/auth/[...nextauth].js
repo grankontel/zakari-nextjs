@@ -1,5 +1,8 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
+import makeToken from "../../../lib/makeToken";
+import { customAlphabet } from 'nanoid';
+const nanoid = customAlphabet('1234567890abcdef', 10)
 
 const providers = [
   Providers.GitHub({
@@ -44,7 +47,10 @@ callbacks.signIn = async function signIn(user, account, metadata) {
     user.email = primaryEmail;
   }
 
-  user.zakariToken = process.env.ZAKARI_TOKEN;
+  const sessionId= nanoid() // should be stored somehow
+  const newToken= makeToken(sessionId, process.env.ZAKARI_API_ID, process.env.ZAKARI_API_KEY)
+  user.zakariToken = newToken;
+
   return true;
 };
 

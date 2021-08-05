@@ -27,20 +27,21 @@ const ZakariForm = ({ endPoint, zakariToken, ...props }) => {
     setIsLoading(true);
     setCopied(false);
 
-    const resp = postZakari(
-      endPoint,
-      zakariToken,
-      request
-    );
-    resp.then((data) => {
-      setIsLoading(false);
+    try {
+      const resp = postZakari(endPoint, zakariToken, request);
+      resp.then((data) => {
+        setIsLoading(false);
 
-      if (data.errors !== undefined) {
-        setErrorMessage("Erreur de zakari");
-      } else {
-        setResponse(data.response.message);
-      }
-    });
+        if (data.errors !== undefined) {
+          setErrorMessage("Erreur de zakari");
+        } else {
+          setResponse(data.response.message);
+        }
+      });
+    } catch (error) {
+      setIsLoading(false);
+      setErrorMessage(error);
+    }
   };
 
   return (
@@ -98,4 +99,3 @@ ZakariForm.propTypes = {
 };
 
 export default ZakariForm;
-

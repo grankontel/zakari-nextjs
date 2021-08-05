@@ -3,11 +3,15 @@ import Head from "next/head";
 import Header from "./Header";
 import PropTypes from "prop-types";
 import { Container } from "react-bulma-components";
-
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 const Layout = ({ children }) => (
   <>
     <Head>
-      <title>With Iron Session</title>
+      <title>
+        Zakari Client : Web version — version{" "}
+        {publicRuntimeConfig.versionNumber}
+      </title>
       <link
         rel="apple-touch-icon"
         sizes="180x180"
@@ -42,6 +46,11 @@ const Layout = ({ children }) => (
         {children}
       </Container>
     </main>
+    <footer className="has-background-grey-lighter mt-8 py-4">
+      <Container className="copyright" textAlign="center" textSize={7}>
+        &copy; TiMalo 2021
+      </Container>
+    </footer>
   </>
 );
 

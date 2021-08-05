@@ -1,21 +1,30 @@
 import React, { useCallback, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import useUser from "../lib/useUser";
-import { useRouter } from "next/router";
-import fetchJson from "../lib/fetchJson";
-import {
-  Navbar,
-  Image as BulmaImage,
-  Media,
-} from "react-bulma-components";
+import { useSession, signIn, signOut } from "next-auth/client";
+
+import { Navbar, Image as BulmaImage } from "react-bulma-components";
 const classNames = require("classnames");
 
 const Header = () => {
-  const { user, mutateUser } = useUser();
-  const router = useRouter();
-  const  [mobileOpen, setMobileOpen]  = useState(false);
-  const toggleMobileMenu = useCallback(() => setMobileOpen(!mobileOpen), [mobileOpen]);
+
+  const [session] = useSession();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    signIn();
+  };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    signOut();
+  };
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const toggleMobileMenu = useCallback(
+    () => setMobileOpen(!mobileOpen),
+    [mobileOpen]
+  );
 
   const navMenu = classNames({
     "is-active": mobileOpen,
@@ -30,15 +39,8 @@ const Header = () => {
             <Navbar.Item renderAs="li">
               <Link href="/">Home</Link>
             </Navbar.Item>
-            {!user?.isLoggedIn && (
-              <Navbar.Item renderAs="li">
-                <Link href="/login">
-                  <a>Login</a>
-                </Link>
-              </Navbar.Item>
-            )}
 
-            {user?.isLoggedIn && (
+            {session ? (
               <>
                 <Navbar.Item renderAs="li">
                   <Link href="/profile-sg">
@@ -47,36 +49,27 @@ const Header = () => {
                         size={24}
                         rounded
                         className="media-left"
-                        src={user.avatarUrl}
-                        alt={user.login}
+                        src={session.user.image}
+                        alt={session.user.login}
                       />{" "}
-                      Profile (Static Generation, recommended)
+                      Profile
                     </a>
                   </Link>
                 </Navbar.Item>
                 <Navbar.Item renderAs="li">
-                  <Link href="/profile-ssr">
-                    Profile (Server-side Rendering)
-                  </Link>
-                </Navbar.Item>
-                <Navbar.Item renderAs="li">
-                  {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-                  <a
-                    href="/api/logout"
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      mutateUser(
-                        await fetchJson("/api/logout", { method: "POST" }),
-                        false
-                      );
-                      router.push("/login");
-                    }}
-                  >
+                  <a onClick={handleLogout} className="logout">
                     Logout
                   </a>
                 </Navbar.Item>
               </>
+            ) : (
+              <Navbar.Item renderAs="li">
+                <a onClick={handleLogin} className="logout">
+                  Login
+                </a>
+              </Navbar.Item>
             )}
+
             <Navbar.Item renderAs="li">
               <a href="https://github.com/vvo/next-iron-session">
                 <Image

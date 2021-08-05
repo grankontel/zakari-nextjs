@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import Image from "next/image";
 import {
   Button,
@@ -6,14 +7,12 @@ import {
   Message,
 } from "react-bulma-components";
 import { useState } from "react";
-import useUser from "../lib/useUser";
 import postZakari from "../lib/postZakari";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
-const ZakariForm = ({ ...props }) => {
+const ZakariForm = ({ endPoint, zakariToken, ...props }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
-  const { user, mutateUser } = useUser();
 
   const [request, setRequest] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -29,8 +28,8 @@ const ZakariForm = ({ ...props }) => {
     setCopied(false);
 
     const resp = postZakari(
-      process.env.NEXT_PUBLIC_ZAKARI_ENDPOINT,
-      user.token,
+      endPoint,
+      zakariToken,
       request
     );
     resp.then((data) => {
@@ -75,7 +74,7 @@ const ZakariForm = ({ ...props }) => {
         <CopyToClipboard text={response} onCopy={() => setCopied(true)}>
           <Button
             color={copied ? "info" : "light"}
-            disabled={!user?.isLoggedIn || response === ""}
+            disabled={!zakariToken || response === ""}
           >
             {copied ? "I adan !" : "Kopyé"}
           </Button>
@@ -83,7 +82,7 @@ const ZakariForm = ({ ...props }) => {
         <Button
           color="primary"
           onClick={handleSubmit}
-          disabled={!user?.isLoggedIn || (!isLoading && request.length < 2)}
+          disabled={!zakariToken || (!isLoading && request.length < 2)}
           loading={isLoading}
         >
           Korijé
@@ -93,4 +92,10 @@ const ZakariForm = ({ ...props }) => {
   );
 };
 
+ZakariForm.propTypes = {
+  zakariToken: PropTypes.string.isRequired,
+  endPoint: PropTypes.string.isRequired,
+};
+
 export default ZakariForm;
+

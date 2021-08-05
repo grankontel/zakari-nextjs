@@ -1,6 +1,7 @@
-import { SWRConfig } from 'swr'
-import fetch from '../lib/fetchJson'
-import '../styles/mystyles.scss'
+import { Provider } from "next-auth/client";
+import { SWRConfig } from "swr";
+import fetch from "../lib/fetchJson";
+import "../styles/mystyles.scss";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -8,13 +9,15 @@ function MyApp({ Component, pageProps }) {
       value={{
         fetcher: fetch,
         onError: (err) => {
-          console.error(err)
+          console.error(err);
         },
       }}
     >
-      <Component {...pageProps} />
+      <Provider>
+        <Component {...pageProps} />
+      </Provider>
     </SWRConfig>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

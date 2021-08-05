@@ -10,15 +10,16 @@
     "zakari"
   ],
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=4000 next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "PORT=4000 next start",
     "lint": "next lint"
   },
   "dependencies": {
     "bulma": "^0.9.3",
     "classnames": "^2.3.1",
     "next": "11.0.1",
+    "next-auth": "^3.27.3",
     "next-iron-session": "^4.2.0",
     "prop-types": "^15.7.2",
     "react": "17.0.2",

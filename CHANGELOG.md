@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- removed iron session
+
 ## [1.0.0] - 2021-08-05
 
 - Auth with GitHub

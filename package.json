@@ -1,23 +1,38 @@
 {
   "name": "zakari-web",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "license": "MIT",
+  "description": "On espérimantasyon a zakari épi NextJs",
+  "keywords": [
+    "nextjs",
+    "kreyol",
+    "zakari"
+  ],
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=4000 next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "PORT=4000 next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "blake3": "^2.1.4",
+    "bulma": "^0.9.3",
+    "classnames": "^2.3.1",
     "next": "11.0.1",
+    "next-auth": "^3.27.3",
     "next-iron-session": "^4.2.0",
     "prop-types": "^15.7.2",
     "react": "17.0.2",
+    "react-bulma-components": "^4.0.7",
+    "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "17.0.2",
+    "react-icons": "^4.2.0",
     "swr": "^0.5.6"
   },
   "devDependencies": {
     "eslint": "7.32.0",
-    "eslint-config-next": "11.0.1"
+    "eslint-config-next": "11.0.1",
+    "sass": "^1.37.5"
   }
 }

@@ -1,103 +1,112 @@
-import React from 'react'
-import Link from 'next/link'
-import useUser from '../lib/useUser'
-import { useRouter } from 'next/router'
-import fetchJson from '../lib/fetchJson'
+import React, { useCallback, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useSession, signIn, signOut } from "next-auth/client";
+
+import { Navbar, Image as BulmaImage } from "react-bulma-components";
+import { IoPersonCircleOutline, IoLogIn, IoLogOut } from "react-icons/io5";
+
+const classNames = require("classnames");
 
 const Header = () => {
-  const { user, mutateUser } = useUser()
-  const router = useRouter()
+  const [session] = useSession();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    signIn();
+  };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    signOut();
+  };
+
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const toggleMobileMenu = useCallback(
+    () => setMobileOpen(!mobileOpen),
+    [mobileOpen]
+  );
+
+  const navMenu = classNames({
+    "is-active": mobileOpen,
+  });
+
   return (
     <header>
-      <nav>
-        <ul>
-          <li>
-            <Link href="/">
-              <a>Home</a>
+      <Navbar py={2}>
+        <Navbar.Brand>
+          <Navbar.Item renderAs="li">
+            <Link href="/" passHref>
+              <Image
+                src="/Zakari-Mark-Light-32px.png"
+                width="32"
+                height="32"
+                alt="Zakari Brand"
+              />
             </Link>
-          </li>
-          {!user?.isLoggedIn && (
-            <li>
-              <Link href="/login">
-                <a>Login</a>
-              </Link>
-            </li>
-          )}
-          {user?.isLoggedIn && (
-            <>
-              <li>
-                <Link href="/profile-sg">
-                  <a>
-                    <img src={user.avatarUrl} width={20} height={20} /> Profile
-                    (Static Generation, recommended)
+          </Navbar.Item>
+          <Navbar.Item renderAs="li">
+            <Link href="/">Home</Link>
+          </Navbar.Item>
+        </Navbar.Brand>
+        <Navbar.Burger onClick={toggleMobileMenu} aria-label="menu" />
+        <Navbar.Menu renderAs="div" className={navMenu}>
+          <Navbar.Container align="right" renderAs="ul">
+            {session ? (
+              <>
+                <Navbar.Item renderAs="li">
+                  <span className="media">
+                    {session.user.image ? (
+                      <BulmaImage
+                        size={24}
+                        rounded
+                        className="media-left"
+                        src={session.user.image}
+                        alt={session.user.login}
+                      />
+                    ) : (
+                      <IoPersonCircleOutline
+                        size={24}
+                        className="media-left"
+                        alt={session.user.login}
+                      />
+                    )}
+                    {session.user.login}
+                  </span>
+                </Navbar.Item>
+                <Navbar.Item renderAs="li">
+                  <a onClick={handleLogout} className="logout">
+                    <span className="media">
+                      <IoLogOut size={24} className="media-left" /> Logout
+                    </span>
                   </a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/profile-ssr">
-                  <a>Profile (Server-side Rendering)</a>
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="/api/logout"
-                  onClick={async (e) => {
-                    e.preventDefault()
-                    mutateUser(
-                      await fetchJson('/api/logout', { method: 'POST' }),
-                      false
-                    )
-                    router.push('/login')
-                  }}
-                >
-                  Logout
+                </Navbar.Item>
+              </>
+            ) : (
+              <Navbar.Item renderAs="li">
+                <a onClick={handleLogin} className="logout">
+                  <span className="media">
+                    <IoLogIn size={24} className="media-left" /> Login
+                  </span>
                 </a>
-              </li>
-            </>
-          )}
-          <li>
-            <a href="https://github.com/vvo/next-iron-session">
-              <img src="/GitHub-Mark-Light-32px.png" width="32" height="32" />
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <style jsx>{`
-        ul {
-          display: flex;
-          list-style: none;
-          margin-left: 0;
-          padding-left: 0;
-        }
+              </Navbar.Item>
+            )}
 
-        li {
-          margin-right: 1rem;
-          display: flex;
-        }
-
-        li:first-child {
-          margin-left: auto;
-        }
-
-        a {
-          color: #fff;
-          text-decoration: none;
-          display: flex;
-          align-items: center;
-        }
-
-        a img {
-          margin-right: 1em;
-        }
-
-        header {
-          padding: 0.2rem;
-          color: #fff;
-          background-color: #333;
-        }
-      `}</style>
+            <Navbar.Item renderAs="li">
+              <a href="https://github.com/grankontel/zakari-nextjs">
+                <Image
+                  src="/GitHub-Mark-Light-32px.png"
+                  width="32"
+                  height="32"
+                  alt="This project on GitHub"
+                />
+              </a>
+            </Navbar.Item>
+          </Navbar.Container>
+        </Navbar.Menu>
+      </Navbar>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

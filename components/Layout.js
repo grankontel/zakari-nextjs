@@ -1,45 +1,52 @@
-import React from 'react'
-import Head from 'next/head'
-import Header from './Header'
-import PropTypes from 'prop-types'
+import React from "react";
+import Head from "next/head";
+import Header from "./Header";
+import PropTypes from "prop-types";
+import { Container } from "react-bulma-components";
 
 const Layout = ({ children }) => (
   <>
     <Head>
       <title>With Iron Session</title>
+      <link
+        rel="apple-touch-icon"
+        sizes="180x180"
+        href="/favicons/apple-touch-icon.png"
+      />
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="/favicons/favicon-32x32.png"
+      />
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="16x16"
+        href="/favicons/favicon-16x16.png"
+      />
+      <link rel="manifest" href="/favicons/site.webmanifest" />
+      <link
+        rel="mask-icon"
+        href="/favicons/safari-pinned-tab.svg"
+        color="#5bbad5"
+      />
+      <link rel="shortcut icon" href="/favicons/favicon.ico" />
+      <meta name="msapplication-TileColor" content="#ffc40d" />
+      <meta name="msapplication-config" content="/favicons/browserconfig.xml" />
+      <meta name="theme-color" content="#ffffff" />
     </Head>
-    <style jsx global>{`
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        color: #333;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-          'Helvetica Neue', Arial, Noto Sans, sans-serif, 'Apple Color Emoji',
-          'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-      }
-
-      .container {
-        max-width: 65rem;
-        margin: 1.5rem auto;
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
-    `}</style>
     <Header />
-
     <main>
-      <div className="container">{children}</div>
+      <Container breakpoint="desktop" my={2} max>
+        {children}
+      </Container>
     </main>
   </>
-)
+);
 
-export default Layout
+export default Layout;
 
 Layout.propTypes = {
   children: PropTypes.node,
-}
+};
